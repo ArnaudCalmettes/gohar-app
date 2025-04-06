@@ -1,5 +1,18 @@
 import { useState } from "react";
-import { adjustAmbitus, defaultStyle, isWhiteKey, Style } from "./common";
+import {
+  adjustAmbitus,
+  blackColorProfile,
+  blackShape,
+  computeColor,
+  defaultStyle,
+  isWhiteKey,
+  keyColorProfile,
+  keyShape,
+  Style,
+  whiteColorProfile,
+  whiteShape,
+} from "./common";
+import { BaseSvgDefs } from "./BaseSvgDefs";
 
 export function SingleNoteKeyboardSelector({
   lowest,
@@ -79,93 +92,13 @@ export function SingleNoteKeyboardSelector({
       height="100%"
     >
       <defs>
-        <clipPath id="canvas">
-          <path d="M0 1h440v95H0z" />
-        </clipPath>
-        <linearGradient id="whiteHover" x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor={style.selectedFill} />
-          <stop offset="100%" stopColor={style.whiteFill} />
-        </linearGradient>
-        <linearGradient id="whiteSelHover" x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor={style.whiteFill} />
-          <stop offset="100%" stopColor={style.selectedFill} />
-        </linearGradient>
-        <linearGradient id="blackHover" x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor={style.selectedFill} />
-          <stop offset="100%" stopColor={style.blackFill} />
-        </linearGradient>
-        <linearGradient id="blackSelHover" x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor={style.blackFill} />
-          <stop offset="100%" stopColor={style.selectedFill} />
-        </linearGradient>
-        <linearGradient id="highSelHover" x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor={style.selectedFill} />
-          <stop offset="100%" stopColor={style.highlightedFill} />
-        </linearGradient>
+        <BaseSvgDefs style={style} />
       </defs>
       <g id="white-keys">{whiteKeys}</g>
       <g id="black-keys">{blackKeys}</g>
       <path d={"M0.5 1h" + x} style={style} />
     </svg>
   );
-}
-
-interface keyShape {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  rx: number;
-  ry: number;
-}
-
-const whiteShape: keyShape = {
-  width: 20,
-  height: 100,
-  x: 0,
-  y: -10,
-  rx: 5,
-  ry: 5,
-};
-
-const blackShape: keyShape = {
-  width: 14,
-  height: 70,
-  x: -7,
-  y: -10,
-  rx: 3,
-  ry: 3,
-};
-
-interface keyColorProfile {
-  baseColor: string;
-  baseHoverColor: string;
-  selColor: string;
-  selHoverColor: string;
-  highColor: string;
-  highHoverColor: string;
-}
-
-function whiteColorProfile(style: Style): keyColorProfile {
-  return {
-    baseColor: style.whiteFill || "#fff",
-    baseHoverColor: "url(#whiteHover)",
-    selColor: style.selectedFill || "#47a",
-    selHoverColor: "url(#whiteSelHover)",
-    highColor: style.highlightedFill || "#8bf",
-    highHoverColor: "url(#highSelHover)",
-  };
-}
-
-function blackColorProfile(style: Style): keyColorProfile {
-  return {
-    baseColor: style.blackFill || "#000",
-    baseHoverColor: "url(#blackHover)",
-    selColor: style.selectedFill || "#47a",
-    selHoverColor: "url(#blackSelHover)",
-    highColor: style.highlightedFill || "#8bf",
-    highHoverColor: "url(#highSelHover)",
-  };
 }
 
 export function Key({
@@ -204,19 +137,4 @@ export function Key({
       style={s}
     />
   );
-}
-
-function computeColor(
-  colors: keyColorProfile,
-  selected: boolean,
-  high: boolean,
-  mouseOver: boolean
-): string {
-  if (selected) {
-    return mouseOver ? colors.selHoverColor : colors.selColor;
-  }
-  if (high) {
-    return mouseOver ? colors.highHoverColor : colors.highColor;
-  }
-  return mouseOver ? colors.baseHoverColor : colors.baseColor;
 }
