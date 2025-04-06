@@ -1,0 +1,3 @@
+.DS_Store
+react-app/public/gohar.wasm
+react-app/src/wasm_exec.js
