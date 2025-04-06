@@ -1,42 +1,6 @@
 import { useState } from "react";
 import { adjustAmbitus, defaultStyle, isWhiteKey, Style } from "./common";
 
-interface keyShape {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  rx: number;
-  ry: number;
-}
-
-const whiteShape: keyShape = {
-  width: 20,
-  height: 100,
-  x: 0,
-  y: -10,
-  rx: 5,
-  ry: 5,
-};
-
-const blackShape: keyShape = {
-  width: 14,
-  height: 70,
-  x: -7,
-  y: -10,
-  rx: 3,
-  ry: 3,
-};
-
-interface keyColorProfile {
-  baseColor: string;
-  baseHoverColor: string;
-  selColor: string;
-  selHoverColor: string;
-  highColor: string;
-  highHoverColor: string;
-}
-
 export function SingleNoteKeyboardSelector({
   lowest,
   highest,
@@ -85,8 +49,8 @@ export function SingleNoteKeyboardSelector({
 
   let x = 1;
   for (let pitch = low; pitch <= high; pitch++) {
-    const idx = pitch - low;
     const isWhite = isWhiteKey(pitch);
+    const idx = pitch - low;
     const key = (
       <Key
         key={pitch}
@@ -146,6 +110,42 @@ export function SingleNoteKeyboardSelector({
   );
 }
 
+interface keyShape {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rx: number;
+  ry: number;
+}
+
+const whiteShape: keyShape = {
+  width: 20,
+  height: 100,
+  x: 0,
+  y: -10,
+  rx: 5,
+  ry: 5,
+};
+
+const blackShape: keyShape = {
+  width: 14,
+  height: 70,
+  x: -7,
+  y: -10,
+  rx: 3,
+  ry: 3,
+};
+
+interface keyColorProfile {
+  baseColor: string;
+  baseHoverColor: string;
+  selColor: string;
+  selHoverColor: string;
+  highColor: string;
+  highHoverColor: string;
+}
+
 function whiteColorProfile(style: Style): keyColorProfile {
   return {
     baseColor: style.whiteFill || "#fff",
@@ -153,7 +153,7 @@ function whiteColorProfile(style: Style): keyColorProfile {
     selColor: style.selectedFill || "#47a",
     selHoverColor: "url(#whiteSelHover)",
     highColor: style.highlightedFill || "#8bf",
-    highHoverColor: "url(#highSelHover",
+    highHoverColor: "url(#highSelHover)",
   };
 }
 
@@ -164,7 +164,7 @@ function blackColorProfile(style: Style): keyColorProfile {
     selColor: style.selectedFill || "#47a",
     selHoverColor: "url(#blackSelHover)",
     highColor: style.highlightedFill || "#8bf",
-    highHoverColor: "url(#highSelHover",
+    highHoverColor: "url(#highSelHover)",
   };
 }
 

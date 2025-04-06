@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import { Gohar, GoharContext } from "./gohar/index.tsx";
 import { GoharLoader } from "./gohar/Loader.tsx";
 import "./App.css";
-import "./wasm_exec.js";
 import { SingleNoteKeyboardSelector } from "./piano/SingleNote.tsx";
 import { ScalePatternSelector } from "./scale/PatternSelector.tsx";
 
@@ -15,13 +14,10 @@ export default function App() {
 }
 
 export function ScaleExplorer() {
-  const gohar = useContext<Gohar>(GoharContext);
   const [currentPattern, setPattern] = useState<number>(0b101010110101);
   const [currentPitch, setPitch] = useState<number | null>(null);
-  const patternMap = new Map<string, number>();
-  for (const pattern of gohar.scalePatterns) {
-    patternMap.set(pattern.toString(), pattern);
-  }
+
+  const gohar = useContext<Gohar>(GoharContext);
   gohar.setLocale("fr");
 
   let highlighted: number[] = [];
