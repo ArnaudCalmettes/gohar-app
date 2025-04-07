@@ -20,7 +20,7 @@ export function ScalePatternSelector({
     const value = pattern.toString();
     return (
       <option key={value} value={value}>
-        {capitalize(gohar.sprintScalePatternName(pattern))}
+        {capitalize(gohar.scalePatternName(pattern))}
       </option>
     );
   });

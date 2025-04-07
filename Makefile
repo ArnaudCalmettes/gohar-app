@@ -4,4 +4,4 @@ wasm:
 
 wasm-tinygo:
 	GOOS=js GOARCH=wasm tinygo build -o react-app/public/gohar.wasm ./gohar-wasm
-	cp `tinygo env GOROOT`/targets/wasm_exec.js react-app/src/
+	cp `tinygo env TINYGOROOT`/targets/wasm_exec.js react-app/src/

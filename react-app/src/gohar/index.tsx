@@ -4,8 +4,8 @@ export interface Gohar {
   isLoaded: boolean;
   scalePatterns: number[];
   setLocale: (locale: string) => void;
-  sprintScaleName: (root: number, pattern: number) => string;
-  sprintScalePatternName: (pattern: number) => string;
+  scaleName: (root: number, pattern: number) => string;
+  scalePatternName: (pattern: number) => string;
   scalePatternPitches: (pattern: number) => number[];
 }
 
@@ -13,8 +13,8 @@ export const defaultGoharCtx = {
   isLoaded: false,
   scalePatterns: [],
   setLocale: () => {},
-  sprintScaleName: () => "loading...",
-  sprintScalePatternName: () => "loading...",
+  scaleName: () => "loading...",
+  scalePatternName: () => "loading...",
   scalePatternPitches: () => [],
 };
 
