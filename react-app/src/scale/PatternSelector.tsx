@@ -12,7 +12,6 @@ export function ScalePatternSelector({
 
   function changeHandler(e: FormEvent<HTMLSelectElement>) {
     const pattern = parseInt(e.currentTarget.value);
-    console.log(pattern);
     onSelectionChanged(pattern);
   }
 
