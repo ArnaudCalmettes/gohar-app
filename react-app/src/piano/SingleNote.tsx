@@ -1,15 +1,5 @@
-import {
-  adjustAmbitus,
-  blackColorProfile,
-  blackShape,
-  defaultStyle,
-  isWhiteKey,
-  Style,
-  whiteColorProfile,
-  whiteShape,
-} from "./common";
-import { BaseSvgDefs } from "./BaseSvgDefs";
-import { Key } from "./Key";
+import { adjustAmbitus, defaultStyle, isWhiteKey, Style } from "./common";
+import { Key, KeyColorProfile, KeyShape } from "./Key";
 
 export function SingleNoteKeyboardSelector({
   lowest,
@@ -91,9 +81,64 @@ export function SingleNoteKeyboardSelector({
       <defs>
         <BaseSvgDefs style={style} />
       </defs>
-      <g id="white-keys">{whiteKeys}</g>
-      <g id="black-keys">{blackKeys}</g>
+      {whiteKeys}
+      {blackKeys}
       <path d={"M0.5 1h" + x} style={style} />
     </svg>
+  );
+}
+
+function whiteColorProfile(style: Style): KeyColorProfile {
+  return {
+    baseColor: style.whiteFill || "#fff",
+    selColor: style.selectedFill || "#47a",
+    highColor: style.highlightedFill || "#8bf",
+  };
+}
+
+function blackColorProfile(style: Style): KeyColorProfile {
+  return {
+    baseColor: style.blackFill || "#000",
+    selColor: style.selectedFill || "#47a",
+    highColor: style.highlightedFill || "#8bf",
+  };
+}
+
+const whiteShape: KeyShape = {
+  width: 20,
+  height: 100,
+  x: 0,
+  y: -10,
+  rx: 5,
+  ry: 5,
+};
+
+const blackShape: KeyShape = {
+  width: 14,
+  height: 70,
+  x: -7,
+  y: -10,
+  rx: 3,
+  ry: 3,
+};
+export function BaseSvgDefs({ style }: { style: Style }) {
+  return (
+    <>
+      <clipPath id="canvas">
+        <path d="M0 1h440v95H0z" />
+      </clipPath>
+      <linearGradient id="Hover" x1="0%" x2="0%" y1="0%" y2="100%">
+        <stop offset="0%" stopColor={style.selectedFill} />
+        <stop offset="100%" stopColor={style.selectedFill} stopOpacity="0" />
+      </linearGradient>
+      <linearGradient id="whiteHoverback" x1="0%" x2="0%" y1="0%" y2="100%">
+        <stop offset="0%" stopColor={style.whiteFill} />
+        <stop offset="100%" stopColor={style.whiteFill} stopOpacity="0" />
+      </linearGradient>
+      <linearGradient id="blackHoverback" x1="0%" x2="0%" y1="0%" y2="100%">
+        <stop offset="0%" stopColor={style.blackFill} />
+        <stop offset="100%" stopColor={style.blackFill} stopOpacity="0" />
+      </linearGradient>
+    </>
   );
 }
