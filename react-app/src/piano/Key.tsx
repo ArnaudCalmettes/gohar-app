@@ -3,6 +3,7 @@ import { Style } from "./common";
 
 export function Key({
   x,
+  name,
   shape,
   style,
   colorProfile,
@@ -11,6 +12,7 @@ export function Key({
   onSelect,
 }: {
   x: number;
+  name: string;
   shape: KeyShape;
   style: Style;
   colorProfile: KeyColorProfile;
@@ -34,7 +36,6 @@ export function Key({
 
   return (
     <g
-      id={x.toString()}
       onClick={onSelect}
       onMouseEnter={() => setMouseOver(true)}
       onMouseLeave={() => setMouseOver(false)}
@@ -53,10 +54,10 @@ export function Key({
         x={shape.x + x + (shape.width - 2) / 2 + 1}
         y={shape.y + shape.height - 3}
         fill="black"
-        font-size="6"
+        fontSize="6"
         textAnchor="middle"
       >
-        {selected || highlighted ? "Do#" : ""}
+        {selected || highlighted ? name : ""}
       </text>
       <rect
         width={shape.width}

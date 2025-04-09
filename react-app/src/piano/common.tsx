@@ -63,6 +63,6 @@ export const defaultStyle: Style = {
   stroke: "#000",
   whiteFill: "#fff",
   blackFill: "#000",
-  selectedFill: "#47a",
+  selectedFill: "#4ad",
   highlightedFill: "#8db",
 };

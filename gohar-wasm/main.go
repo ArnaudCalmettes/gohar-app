@@ -2,10 +2,10 @@
 
 package main
 
-import "github.com/ArnaudCalmettes/gohar/wasm"
+import "github.com/ArnaudCalmettes/gohar/lib/js"
 
 func main() {
 	done := make(chan struct{})
-	wasm.ExportJSFuncs()
+	js.ImportGoharBindings()
 	<-done
 }

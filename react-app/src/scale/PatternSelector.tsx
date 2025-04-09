@@ -26,7 +26,11 @@ export function ScalePatternSelector({
   });
 
   return (
-    <select value={selected.toString()} onChange={changeHandler}>
+    <select
+      id="scalePatternSelector"
+      value={selected.toString()}
+      onChange={changeHandler}
+    >
       {options}
     </select>
   );

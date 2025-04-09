@@ -1,21 +1,24 @@
+import { useContext } from "react";
 import { adjustAmbitus, defaultStyle, isWhiteKey, Style } from "./common";
 import { Key, KeyColorProfile, KeyShape } from "./Key";
+import { GoharContext } from "../gohar";
 
 export function SingleNoteKeyboardSelector({
   lowest,
   highest,
-  highlighted,
-  selected,
+  highlightedNotes: highlighted,
+  selectedPitch: selected,
   style,
   onSelectionChanged,
 }: {
   lowest: number;
   highest: number;
-  selected?: number | null;
-  highlighted?: number[];
+  selectedPitch?: number | null;
+  highlightedNotes?: number[];
   style?: Style;
   onSelectionChanged: (selectedPitch: number | null) => void;
 }) {
+  const gohar = useContext(GoharContext);
   if (selected === undefined) {
     selected = null;
   }
@@ -32,11 +35,14 @@ export function SingleNoteKeyboardSelector({
 
   const selectedPitchIndex = selected != null ? selected - low : -1;
   const highlight = Array<boolean>(high - low + 1).fill(false);
+  const names = Array<string>(high - low + 1).fill("");
   if (highlighted) {
-    for (const pitch of highlighted) {
+    for (const note of highlighted) {
+      const pitch = gohar.notePitch(note);
       const i = pitch - low;
       if (0 <= i && i < highlight.length) {
         highlight[i] = true;
+        names[i] = capitalize(gohar.noteName(note));
       }
     }
   }
@@ -55,6 +61,7 @@ export function SingleNoteKeyboardSelector({
       <Key
         key={pitch}
         x={x}
+        name={names[idx]}
         shape={isWhite ? whiteShape : blackShape}
         colorProfile={isWhite ? wColorProfile : bColorProfile}
         style={style}
@@ -79,6 +86,9 @@ export function SingleNoteKeyboardSelector({
       height="100%"
     >
       <defs>
+        <clipPath id="canvas">
+          <path d={"M0 1h" + (x + 0.5) + "v95H0z"} />
+        </clipPath>
         <BaseSvgDefs style={style} />
       </defs>
       {whiteKeys}
@@ -124,9 +134,6 @@ const blackShape: KeyShape = {
 export function BaseSvgDefs({ style }: { style: Style }) {
   return (
     <>
-      <clipPath id="canvas">
-        <path d="M0 1h440v95H0z" />
-      </clipPath>
       <linearGradient id="Hover" x1="0%" x2="0%" y1="0%" y2="100%">
         <stop offset="0%" stopColor={style.selectedFill} />
         <stop offset="100%" stopColor={style.selectedFill} stopOpacity="0" />
@@ -141,4 +148,8 @@ export function BaseSvgDefs({ style }: { style: Style }) {
       </linearGradient>
     </>
   );
+}
+
+function capitalize(val: string): string {
+  return val.charAt(0).toUpperCase() + val.slice(1);
 }

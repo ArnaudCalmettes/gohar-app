@@ -23,11 +23,9 @@ export function ScaleExplorer() {
     gohar.setLocale(locale);
   }
 
-  let highlighted: number[] = [];
+  let highlightedNotes: number[] = [];
   if (currentPitch != null && currentPattern) {
-    highlighted = gohar
-      .scalePatternPitches(currentPattern)
-      .map((pitch) => pitch + currentPitch);
+    highlightedNotes = gohar.scaleNotesFromPitch(currentPitch, currentPattern);
   }
   return (
     <>
@@ -37,10 +35,10 @@ export function ScaleExplorer() {
         onSelectionChanged={setPattern}
       />
       <SingleNoteKeyboardSelector
-        lowest={-11}
+        lowest={-12}
         highest={12}
-        highlighted={highlighted}
-        selected={currentPitch}
+        highlightedNotes={highlightedNotes}
+        selectedPitch={currentPitch}
         onSelectionChanged={setPitch}
       />
     </>
@@ -59,7 +57,7 @@ function LocaleSelector({
   }
 
   return (
-    <select value={selected} onChange={changeHandler}>
+    <select id="localeSelector" value={selected} onChange={changeHandler}>
       <option key="en" value="en">
         English
       </option>
