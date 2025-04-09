@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, FormEvent } from "react";
 import { Gohar, GoharContext } from "./gohar/index.tsx";
 import { GoharLoader } from "./gohar/Loader.tsx";
 import "./App.css";
@@ -16,9 +16,12 @@ export default function App() {
 export function ScaleExplorer() {
   const [currentPattern, setPattern] = useState<number>(0b101010110101);
   const [currentPitch, setPitch] = useState<number | null>(null);
+  const [locale, setLocale] = useState<string>("en");
 
   const gohar = useContext<Gohar>(GoharContext);
-  gohar.setLocale("fr");
+  if (gohar.isLoaded) {
+    gohar.setLocale(locale);
+  }
 
   let highlighted: number[] = [];
   if (currentPitch != null && currentPattern) {
@@ -28,17 +31,41 @@ export function ScaleExplorer() {
   }
   return (
     <>
+      <LocaleSelector selected={locale} onSelectionChanged={setLocale} />
       <ScalePatternSelector
         selected={currentPattern}
         onSelectionChanged={setPattern}
       />
       <SingleNoteKeyboardSelector
         lowest={-11}
-        highest={24}
+        highest={12}
         highlighted={highlighted}
         selected={currentPitch}
         onSelectionChanged={setPitch}
       />
     </>
+  );
+}
+
+function LocaleSelector({
+  selected,
+  onSelectionChanged,
+}: {
+  selected: string;
+  onSelectionChanged: (locale: string) => void;
+}) {
+  function changeHandler(e: FormEvent<HTMLSelectElement>) {
+    onSelectionChanged(e.currentTarget.value);
+  }
+
+  return (
+    <select value={selected} onChange={changeHandler}>
+      <option key="en" value="en">
+        English
+      </option>
+      <option key="fr" value="fr">
+        Français
+      </option>
+    </select>
   );
 }
