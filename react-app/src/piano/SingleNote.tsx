@@ -1,18 +1,15 @@
-import { useState } from "react";
 import {
   adjustAmbitus,
   blackColorProfile,
   blackShape,
-  computeColor,
   defaultStyle,
   isWhiteKey,
-  keyColorProfile,
-  keyShape,
   Style,
   whiteColorProfile,
   whiteShape,
 } from "./common";
 import { BaseSvgDefs } from "./BaseSvgDefs";
+import { Key } from "./Key";
 
 export function SingleNoteKeyboardSelector({
   lowest,
@@ -78,7 +75,7 @@ export function SingleNoteKeyboardSelector({
     );
     if (isWhite) {
       whiteKeys.push(key);
-      x += 20;
+      x += whiteShape.width;
     } else {
       blackKeys.push(key);
     }
@@ -98,43 +95,5 @@ export function SingleNoteKeyboardSelector({
       <g id="black-keys">{blackKeys}</g>
       <path d={"M0.5 1h" + x} style={style} />
     </svg>
-  );
-}
-
-export function Key({
-  x,
-  shape,
-  style,
-  colorProfile,
-  highlighted,
-  selected,
-  onSelect,
-}: {
-  x: number;
-  shape: keyShape;
-  style: Style;
-  colorProfile: keyColorProfile;
-  highlighted: boolean;
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  const [mouseOver, setMouseOver] = useState<boolean>(false);
-  const s = structuredClone(style);
-  s.fill = computeColor(colorProfile, selected, highlighted, mouseOver);
-
-  return (
-    <rect
-      width={shape.width}
-      height={shape.height}
-      x={shape.x + x}
-      y={shape.y}
-      rx={shape.rx}
-      ry={shape.ry}
-      clipPath="url(#canvas)"
-      onClick={onSelect}
-      onMouseEnter={() => setMouseOver(true)}
-      onMouseLeave={() => setMouseOver(false)}
-      style={s}
-    />
   );
 }
