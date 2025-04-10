@@ -1,18 +1,16 @@
 import { useContext } from "react";
-import { adjustAmbitus, defaultStyle, isWhiteKey, Style } from "./common";
+import { defaultStyle, Style } from "./Style";
 import { Key, KeyColorProfile, KeyShape } from "./Key";
-import { GoharContext } from "../gohar";
+import { GoharContext, isWhiteKey } from "../gohar/gohar";
 
 export function SingleNoteKeyboardSelector({
-  lowest,
-  highest,
-  highlightedNotes: highlighted,
+  octaves,
   selectedPitch: selected,
+  highlightedNotes: highlighted,
   style,
   onSelectionChanged,
 }: {
-  lowest: number;
-  highest: number;
+  octaves: number;
   selectedPitch?: number | null;
   highlightedNotes?: number[];
   style?: Style;
@@ -23,7 +21,7 @@ export function SingleNoteKeyboardSelector({
     selected = null;
   }
   style ||= defaultStyle;
-  const { low, high } = adjustAmbitus(lowest, highest);
+  const { low, high } = computeAmbitus(octaves);
 
   function selectHandler(pitch: number) {
     if (selected === pitch) {
@@ -96,6 +94,13 @@ export function SingleNoteKeyboardSelector({
       <path d={"M0.5 1h" + x} style={style} />
     </svg>
   );
+}
+
+function computeAmbitus(octaves: number): { low: number; high: number } {
+  return {
+    low: (-octaves / 2) * 12,
+    high: (octaves / 2 + (octaves % 2)) * 12,
+  };
 }
 
 function whiteColorProfile(style: Style): KeyColorProfile {

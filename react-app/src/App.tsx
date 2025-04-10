@@ -1,5 +1,5 @@
 import { useState, useContext, FormEvent } from "react";
-import { Gohar, GoharContext } from "./gohar/index.tsx";
+import { Gohar, GoharContext } from "./gohar/gohar.tsx";
 import { GoharLoader } from "./gohar/Loader.tsx";
 import "./App.css";
 import { SingleNoteKeyboardSelector } from "./piano/SingleNote.tsx";
@@ -17,6 +17,7 @@ export function ScaleExplorer() {
   const [currentPattern, setPattern] = useState<number>(0b101010110101);
   const [currentPitch, setPitch] = useState<number | null>(null);
   const [locale, setLocale] = useState<string>("en");
+  const [octaves, setOctaves] = useState<number>(2);
 
   const gohar = useContext<Gohar>(GoharContext);
   if (gohar.isLoaded) {
@@ -29,19 +30,40 @@ export function ScaleExplorer() {
   }
   return (
     <>
+      <KeyboardRangeSelector onSelectionChanged={setOctaves} />
       <LocaleSelector selected={locale} onSelectionChanged={setLocale} />
       <ScalePatternSelector
         selected={currentPattern}
         onSelectionChanged={setPattern}
       />
       <SingleNoteKeyboardSelector
-        lowest={-12}
-        highest={12}
+        octaves={octaves}
         highlightedNotes={highlightedNotes}
         selectedPitch={currentPitch}
         onSelectionChanged={setPitch}
       />
     </>
+  );
+}
+
+function KeyboardRangeSelector({
+  onSelectionChanged,
+}: {
+  onSelectionChanged: (octaves: number) => void;
+}) {
+  return (
+    <p>
+      Octaves:
+      <input
+        id="keyboardRangeSelector"
+        type="number"
+        step={1}
+        min={2}
+        max={8}
+        defaultValue={2}
+        onInput={(e) => onSelectionChanged(parseInt(e.currentTarget.value))}
+      />
+    </p>
   );
 }
 

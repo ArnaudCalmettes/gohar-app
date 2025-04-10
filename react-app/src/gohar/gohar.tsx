@@ -30,3 +30,28 @@ export interface Scale {
   root: number;
   pattern: number;
 }
+const whiteKeys = [
+  true,
+  false,
+  true,
+  false,
+  true,
+  true,
+  false,
+  true,
+  false,
+  true,
+  false,
+  true,
+];
+
+export function isWhiteKey(pitch: number): boolean {
+  return whiteKeys[wrap(pitch, 12)];
+}
+function wrap(a: number, mod: number): number {
+  a = a % mod;
+  if (a < 0) {
+    a += mod;
+  }
+  return a;
+}

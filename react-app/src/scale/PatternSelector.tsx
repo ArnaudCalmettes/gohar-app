@@ -1,5 +1,5 @@
 import { FormEvent, useContext } from "react";
-import { GoharContext } from "../gohar";
+import { GoharContext } from "../gohar/gohar";
 
 export function ScalePatternSelector({
   selected,

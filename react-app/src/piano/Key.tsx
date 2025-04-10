@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Style } from "./common";
+import { Style } from "./Style";
 
 export function Key({
   x,
