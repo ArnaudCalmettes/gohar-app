@@ -97,9 +97,15 @@ export function SingleNoteKeyboardSelector({
 }
 
 function computeAmbitus(octaves: number): { low: number; high: number } {
+  let low = 0;
+  let high = octaves;
+  while (high - low > 1) {
+    high--;
+    low++;
+  }
   return {
-    low: (-octaves / 2) * 12,
-    high: (octaves / 2 + (octaves % 2)) * 12,
+    low: low * -12,
+    high: high * 12 - 1,
   };
 }
 
